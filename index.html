@@ -8,34 +8,57 @@
 <div id="fb-root"></div>
 
 <div class="container">
-<button id="login_button">Login</button>
-<button id="logout_button">Logout</button>
 </div>
 
 <div class="user_info" id="user_info">
 
 </div>
+<script type="text/javascript" src="/jquery.js"></script>
+<script type="text/javascript" src="/underscore.js"></script>
+<script type="text/javascript" src="/backbone.js"></script>
 <script src="http://connect.facebook.net/de_DE/all.js"></script>
 <script type="text/javascript">
+window.onload = function(){
+
+var view1 = Backbone.View.extend({
+
+el : $('.container'),
+
+events : {
+'click button#login_button' : 'handle_login',
+'click button#logout_button' : 'handle_login'
+},
+
+initialize : function(){
+_.bindAll(this,'render');
 FB.init({
 appId : '1445076445707428'
 });
 
-FB.getLoginStatus(handle_login);
+FB.getLoginStatus(this.handle_login);
+this.render();
+},
 
-document.getElementById('login_button').addEventListener('click',function(){
-FB.login(handle_login);
-});
+render : function(){
+$(this.el).append('<button id="login_button">Login</button><button id="logout_button">Logout</button>');
+},
 
-document.getElementById('logout_button').addEventListener('click',function(){
-FB.logout(handle_login);
-});
-
-
-function handle_login(){
+handle_login : function(){
 FB.api('/me',function(response){
-document.getElementById('user_info').innerHTML = response.name;
+$('#user_info').html(response.name);
 });
+},
+
+add_me : function(){
+console.log('Heya man');
+}
+
+});
+
+
+var listv1 = new view1();
+
+
 }
 </script>
 
